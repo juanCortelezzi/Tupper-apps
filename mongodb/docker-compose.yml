@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    ports: 
+      - "27017:27017/tcp"
+    volumes: 
+      - "./mongodata:/data/db"
+      - "./initScript.js:/docker-entrypoint-initdb.d/initScript.js:ro"
+    environment:
+      MONGO_INITDB_DATABASE: testing
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass

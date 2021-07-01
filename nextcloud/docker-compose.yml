@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10.12-alpine # use version 10.12 of postgres, still works with pgadmin3
+    container_name: pgdatabase
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - "./pgdata:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DB=nextcloud_postgress
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=pass
+    
+  app:
+    image: nextcloud
+    container_name: nextcloud
+    restart: always
+    ports:
+      - 8082:80
+    volumes:
+      - "./config:/var/www/html"
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud_postgress
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=pass
+    depends_on:
+      - db
